@@ -10,7 +10,7 @@ module InstagramApi
     # User instance constructor. Accepts the +user_id+ or refers to +self+
 
     def initialize(user_id)
-      @user_id = user_id || 'self'
+      @user_id = user_id || 'me'
     end
 
     # Returns an information about the given user
@@ -25,6 +25,10 @@ module InstagramApi
     # @see https://www.instagram.com/developer/endpoints/users/#get_users_self
     def show(options = {})
       super @user_id, options
+    end
+
+    def media(options = {})
+      index @user_id, 'media', options
     end
 
     def recent_media(options = {})
@@ -55,5 +59,4 @@ module InstagramApi
       make_request resource_path("#{user_id}/relationship"), { body: options }, :post
     end
   end
-
 end

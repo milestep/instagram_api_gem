@@ -9,7 +9,7 @@ module InstagramApi
 
     include HTTParty
 
-    BASE_API_URI = 'https://api.instagram.com/v1'.freeze
+    BASE_API_URI = 'https://graph.instagram.com'.freeze
 
     ERROR_CODES = {
       400 => BadRequest,
@@ -24,9 +24,9 @@ module InstagramApi
     protected
 
     def resource_path(id = nil)
-      resource = self.class.name.split('::').last.downcase.plural
+      # resource = self.class.name.split('::').last.downcase.plural
       suffix = id ? "/#{id}" : ''
-      "#{BASE_API_URI}/#{resource}#{suffix}?access_token=#{InstagramApi.access_token}"
+      "#{BASE_API_URI}/#{suffix}?fields=id,username,caption,media_type,media_url,permalink,timestamp,thumbnail_url&access_token=#{InstagramApi.access_token}"
     end
 
     def make_request(url, options, method = :get)
@@ -52,8 +52,6 @@ module InstagramApi
       error = ERROR_CODES[response.code].new(response)
       raise error, error.message
     end
-
   end
-
 end
 
